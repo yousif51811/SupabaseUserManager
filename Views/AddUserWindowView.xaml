@@ -9,13 +9,12 @@
     <Grid>
         <StackPanel Grid.Column="0" Margin="10">
             <TextBlock Text="Name:" Margin="0,0,0,5"/>
-            <TextBox Margin="0,0,0,10"/>
-            <TextBlock Text="Grade:" Margin="0,0,0,5"/>
-            <TextBox Margin="0,0,0,10"/>
+            <TextBox Margin="0,0,0,10" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Password:" Margin="0,0,0,5"/>
-            <TextBox Margin="0,0,0,10"/>
+            <TextBox Margin="0,0,0,10" Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
             
         </StackPanel>
-        <Button Margin="10" Content="Add" Width="50" Height="30" VerticalAlignment="Bottom"/>
+        <Button Margin="10" Content="Add" Width="50" Height="30" VerticalAlignment="Bottom"
+                Command="{Binding AddUserCommand}"/>
     </Grid>
 </Window>

@@ -20,6 +20,7 @@ namespace SupabaseUserManager.Views
         public AddUserWindowView()
         {
             InitializeComponent();
+            DataContext = new ViewModels.AddUserWindowViewModel();
         }
     }
 }

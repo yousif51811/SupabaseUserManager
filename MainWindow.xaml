@@ -7,5 +7,22 @@
         xmlns:views="clr-namespace:SupabaseUserManager.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="300" Width="500">
-    <views:UserListingView/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="Preferences" Command="{Binding OpenConfigCommand}" />
+                    <Separator />
+                    <MenuItem Header="Exit"/>
+                </MenuItem>
+            </Menu>
+            <Grid />
+        </DockPanel>
+
+        <views:UserListingView Grid.Row="1"/>
+    </Grid>
 </Window>

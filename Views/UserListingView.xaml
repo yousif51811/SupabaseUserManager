@@ -8,34 +8,29 @@
              d:DesignHeight="250" d:DesignWidth="500">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
         <!-- Header Controls -->
-        <Grid>
+        <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
-                <Button Content="Add User" Width="100" Margin="5,0,5,0"/>
-                <Button Content="Delete User" Width="100" Margin="5,0,5,0"/>
-                <Button Content="Reload" Width="100" Margin="5,0,5,0"/>
+                <Button Content="Add User" Width="100" Margin="5,0,5,0"
+                        Command="{Binding LaunchAddUserCommand}"/>
+                <Button Content="Delete User" Width="100" Margin="5,0,5,0"
+                        IsEnabled="{Binding IsSelected}"
+                        Command="{Binding DeleteUserCommand}"/>
+                <Button Content="Reload" Width="100" Margin="5,0,5,0"
+                        Command="{Binding LoadUsersCommand}"/>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1" Grid.ColumnSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="2*" />
-            </Grid.ColumnDefinitions>
+        <Grid Grid.Row="2" Grid.ColumnSpan="2">
             <!-- DataGrid to display users -->
-            <DataGrid Grid.Column="1" AutoGenerateColumns="False" />
-
-            <!-- The entries -->
-            <StackPanel Grid.Column="0" Margin="10">
-                <TextBlock Text="Name:" Margin="0,0,0,5"/>
-                <TextBox Margin="0,0,0,10"/>
-                <TextBlock Text="Grade:" Margin="0,0,0,5"/>
-                <TextBox Margin="0,0,0,10"/>
-                <TextBlock Text="Password:" Margin="0,0,0,5"/>
-                <TextBox Margin="0,0,0,10"/>
-            </StackPanel>
+            <DataGrid Grid.Column="1"
+                      ItemsSource="{Binding Users}"
+                      SelectedItem="{Binding SelectedUser}"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"/>
         </Grid>
     </Grid>
 </UserControl>
