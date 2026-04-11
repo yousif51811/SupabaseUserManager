@@ -31,56 +31,65 @@ namespace SupabaseUserManager.ViewModels
         [RelayCommand]
         private async Task LoadUsersAsync()
         {
-            Users.Clear();
-            var users = await SupabaseHandler.GetAllUsersAsync();
-
-            foreach (var user in users)
+            try
             {
-                Users.Add(new User
-                {
-                    UID = user.Id,
-                    Display_Name = user.Email.Split('@')[0],
-                    Email = user.Email,
-                    CreatedAt = user.CreatedAt.ToString()
-                });
-            }
-        }
-        
 
-        /// <summary>
-        /// Deletes the currently selected user after confirming the action with the user.
-        /// </summary>
-        [RelayCommand]
-        private async Task DeleteUserAsync()
-        {
-            if (SelectedUser == null)
-                return;
-            var result = MessageBox.Show($"Are you sure you want to delete user '{SelectedUser.Email}'?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.Yes)
-            {
-                bool success = await SupabaseHandler.DeleteUserAsync(SelectedUser.UID);
-                if (success)
+
+                Users.Clear();
+                var users = await SupabaseHandler.GetAllUsersAsync();
+
+                foreach (var user in users)
                 {
-                    Users.Remove(SelectedUser);
-                    SelectedUser = null;
-                }
-                else
-                {
-                    MessageBox.Show("Failed to delete the user. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Users.Add(new User
+                    {
+                        UID = user.Id,
+                        Display_Name = user.Email.Split('@')[0],
+                        Email = user.Email,
+                        CreatedAt = user.CreatedAt.ToString()
+                    });
                 }
             }
-        }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load users: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
-        /// <summary>
-        /// Launch the adduserwindow view
-        /// </summary>
-        [RelayCommand]
-        private async Task LaunchAddUser()
-        {
-            var addUserWindow = new AddUserWindowView();
-            addUserWindow.ShowDialog();
-            await LoadUsersAsync();
-        }
 
+            /// <summary>
+            /// Deletes the currently selected user after confirming the action with the user.
+            /// </summary>
+            [RelayCommand]
+            async Task DeleteUserAsync()
+            {
+                if (SelectedUser == null)
+                    return;
+                var result = MessageBox.Show($"Are you sure you want to delete user '{SelectedUser.Email}'?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    bool success = await SupabaseHandler.DeleteUserAsync(SelectedUser.UID);
+                    if (success)
+                    {
+                        Users.Remove(SelectedUser);
+                        SelectedUser = null;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to delete the user. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+
+            /// <summary>
+            /// Launch the adduserwindow view
+            /// </summary>
+            [RelayCommand]
+            async Task LaunchAddUser()
+            {
+                var addUserWindow = new AddUserWindowView();
+                addUserWindow.ShowDialog();
+                await LoadUsersAsync();
+            }
+
+        }
     }
 }
