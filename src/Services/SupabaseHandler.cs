@@ -17,19 +17,20 @@ namespace SupabaseUserManager.Services
 
         public static async Task InitializeAsync()
         {
-            var options = new SupabaseOptions
+            try
             {
-                AutoRefreshToken = true,
-                AutoConnectRealtime = false
-            };
+                var options = new SupabaseOptions
+                {
+                    AutoRefreshToken = true,
+                    AutoConnectRealtime = false
+                };
 
-            Client = new Supabase.Client(SupabaseUrl, SupabaseKey, options);
+                Client = new Supabase.Client(SupabaseUrl, SupabaseKey, options);
 
-            await Client.InitializeAsync().ConfigureAwait(false);
+                await Client.InitializeAsync().ConfigureAwait(false);
+            } catch { }
         }
 
-
-        #region User Management
         public static async Task<List<User>> GetAllUsersAsync()
         {
             try
@@ -37,9 +38,8 @@ namespace SupabaseUserManager.Services
                 var response = await Client.AdminAuth(SupabaseKey).ListUsers().ConfigureAwait(false);
                 return response.Users;
             } 
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show($"Check your configuration!\n {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
         }
@@ -65,7 +65,6 @@ namespace SupabaseUserManager.Services
                 MessageBox.Show($"Error creating user!\n {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        #endregion
 
 
         /// <summary>

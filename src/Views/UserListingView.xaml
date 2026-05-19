@@ -22,6 +22,7 @@
                         Command="{Binding DeleteUserCommand}"/>
                 <Button Content="Reload" Width="100" Margin="5,0,5,0"
                         Command="{Binding LoadUsersCommand}"/>
+                <TextBlock Text="{Binding StatusMessage}" Margin="20,0,0,0" VerticalAlignment="Center"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2" Grid.ColumnSpan="2">

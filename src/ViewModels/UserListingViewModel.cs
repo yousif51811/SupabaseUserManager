@@ -11,12 +11,14 @@ namespace SupabaseUserManager.ViewModels
 {
     partial class UserListingViewModel : ObservableObject
     {
-        // An observable collection of all the users retrieved from the Supabase database.
-        // This collection is bound to the UI to display the list of users.
         public ObservableCollection<User> Users { get; set; } = new ObservableCollection<User>();
+
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsSelected))]
         public partial User SelectedUser { get; set; }
+
+        [ObservableProperty]
+        private string statusMessage = string.Empty;
         public UserListingViewModel()
         {
             _ = LoadUsersAsync();
@@ -49,13 +51,13 @@ namespace SupabaseUserManager.ViewModels
                     });
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show($"Failed to load users: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                StatusMessage = "Failed to load users";
             }
 
-
-            /// <summary>
+        }
+                    /// <summary>
             /// Deletes the currently selected user after confirming the action with the user.
             /// </summary>
             [RelayCommand]
@@ -74,7 +76,7 @@ namespace SupabaseUserManager.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show("Failed to delete the user. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        StatusMessage = "Failed to delete the user.";
                     }
                 }
             }
@@ -89,7 +91,5 @@ namespace SupabaseUserManager.ViewModels
                 addUserWindow.ShowDialog();
                 await LoadUsersAsync();
             }
-
-        }
     }
 }
